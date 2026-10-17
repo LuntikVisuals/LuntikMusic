@@ -117,6 +117,7 @@ data class Song(
     val path: String
 )
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MusicPlayerScreen(
     songs: List<Song>,
