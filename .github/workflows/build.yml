@@ -25,8 +25,14 @@ jobs:
         with:
           gradle-version: 8.7
 
-      - name: Install Android SDK components
+      - name: Setup Android SDK
         run: |
+          mkdir -p /usr/local/lib/android/sdk/cmdline-tools
+          cd /usr/local/lib/android/sdk/cmdline-tools
+          curl -sL https://dl.google.com/android/repository/commandlinetools-linux-11076708_latest.zip -o cmdtools.zip
+          unzip -q cmdtools.zip
+          mv cmdline-tools latest
+          export PATH=$PATH:/usr/local/lib/android/sdk/cmdline-tools/latest/bin
           yes | sdkmanager --licenses || true
           sdkmanager "platforms;android-34" "build-tools;34.0.0" "platform-tools"
 
@@ -35,6 +41,7 @@ jobs:
         env:
           ANDROID_HOME: /usr/local/lib/android/sdk
           ANDROID_SDK_ROOT: /usr/local/lib/android/sdk
+          PATH: $PATH:/usr/local/lib/android/sdk/cmdline-tools/latest/bin:/usr/local/lib/android/sdk/platform-tools
 
       - name: Create Release
         uses: softprops/action-gh-release@v2
